@@ -4,13 +4,11 @@ import os
 
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
-from webserver import keep_alive
 from discord.utils import get
 import random
 
 
-load_dotenv()
+
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
