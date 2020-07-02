@@ -112,5 +112,4 @@ async def verify(ctx):
         response = 'You are not verified, to become verified, logon to the mcgill 2020 server'
     await ctx.send(response)
 
-keep_alive()
 bot.run(TOKEN)
