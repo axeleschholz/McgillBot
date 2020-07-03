@@ -100,21 +100,24 @@ async def check(ctx, *targets: discord.Member):
 @commands.has_role('Admin')
 async def check(ctx, target: discord.Member):
     houses = []
-    houses.append(get(ctx.guild.roles, name="House Husky"))
-    houses.append(get(ctx.guild.roles, name="House Fox"))
-    houses.append(get(ctx.guild.roles, name="House Narwhal"))
-    for role in target.roles:
-        if role in houses:
-            await target.remove_roles(role)
-    
-    new = random.choice(houses)
-    print(new)
-    try:
-        await target.add_roles(new)
-        response = target.nick + ' is assigned to ' + new.name
-    except Exception:
-        response = Exception
-    await ctx.send(response)
+    for role in ctx.guild.roles:
+      if 'House' in role.name:
+        houses.append(role)
+    if not any(houses):
+      await ctx.send("There don't seem to be houses on this channel.")
+    else:
+      for role in target.roles:
+          if role in houses:
+              await target.remove_roles(role)
+
+      new = random.choice(houses)
+      print(new)
+      try:
+          await target.add_roles(new)
+          response = target.nick + ' is assigned to ' + new.name
+      except Exception:
+          response = Exception
+      await ctx.send(response)
 
 @bot.command(name='consent', help='Gives consent role')
 async def consent(ctx):
