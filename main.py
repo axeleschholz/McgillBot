@@ -96,7 +96,7 @@ async def check(ctx, *targets: discord.Member):
     #await target.kick()
     await ctx.send(response)
 
-@bot.command(name='rollHouse', help='rolls house')
+@bot.command(name='roll', help='admin command - rolls house for target')
 @commands.has_role('Admin')
 async def check(ctx, target: discord.Member):
     houses = []
@@ -142,6 +142,11 @@ async def consent(ctx):
 async def check(ctx):
     response = random.choice(checks)
     await ctx.send(response)
+    
+@bot.command(name='fancy', help='makes fancy')
+async def check(ctx, args):
+    response = args
+    await ctx.send('```' + response +'```')
 
 @bot.command(name='quote', help='gives some wisdom')
 async def quote(ctx):
