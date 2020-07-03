@@ -29,7 +29,7 @@ checks = [
 ]
 quotes = [
   'History is lethal.',
-  'If one seeks to become pregnant, one has no other choice but to live a lie and go to prison.'
+  'If one seeks to become pregnant, one has no other choice but to live a lie and go to prison.',
   "Diving headfirst into other people's misery gives birth to shame.",
   'Blessed be the sun who strikes his problems, but more blessed be the son who strikes his apples.',
   'The only difference between self-realization and a non-sexual relationship, is that a non-sexual relationship means nothing.',
@@ -47,7 +47,7 @@ quotes = [
   'If one wishes to stop a global pandemic, there is but one possibility: be sexy.',
   'Milk cats.',
   'A bug and a writer should not be combined.',
-  'Ask not "at what cost", but "at what cost".'
+  'Ask not "at what cost", but "at what cost".',
   'Losing your virginity is a lot like the Spanish Inquisition. It happens.',
   "You're nervous.",
   "Confuse the government?",
