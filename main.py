@@ -144,8 +144,8 @@ async def check(ctx):
     await ctx.send(response)
     
 @bot.command(name='fancy', help='makes fancy')
-async def check(ctx, args):
-    response = args
+async def check(ctx, *args):
+    response = ' '.join(args)
     await ctx.send('```' + response +'```')
 
 @bot.command(name='quote', help='gives some wisdom')
