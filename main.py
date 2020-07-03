@@ -12,7 +12,8 @@ import random
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='.')
+
 checks = [
   'check check, roger that',
   "check 1 2, we're all good here",
@@ -35,8 +36,105 @@ quotes = [
   'Tickling is bad for your brand.',
   'Decrease realism.',
   'Only old people give up popularity.',
-  'Napalm likes you.'
-]
+  'Napalm likes you.',
+  'You are a god. Remember that.',
+  'Internet addiction is a lot like a meat grinder. Painful, but interesting.',
+  'Kik an insect.',
+  'You can be a joke.',
+  'Obey the law.',
+  'Fit in.',
+  'Never stop being socially isolated and have a confusing Monday.',
+  'If one wishes to stop a global pandemic, there is but one possibility: be sexy.',
+  'Milk cats.',
+  'A bug and a writer should not be combined.',
+  'Ask not "at what cost", but "at what cost".'
+  'Losing your virginity is a lot like the Spanish Inquisition. It happens.',
+  "You're nervous.",
+  "Confuse the government?",
+  "A lover's infidelity is mother nature telling you to form a cult.",
+  'Get chlamydia.',
+  'Generosity. Sure, but why?',
+  'No u /quote',
+  "Carry a big stick.",
+  "Spam materwelon.",
+  "Confusing each other begins with confusing ourselves.",
+  "Always resist authority.",
+  'Love food.',
+  'Always try drugs.',
+  'Ask Neuro.',
+  'If they tell you that you cannot leave home, do exactly that.',
+  'eNgInEeRs',
+  "Most people don't know that the next stock market collapse is big business.",
+  "There is a proven link between being single and human sacrifice.",
+  'These days people say "license and registration, please" the same way they say "party with me".',
+  "AI shouldn't drive.",
+  "I just got intel from the HQ: ETA 5 minutes 'til bedtime boys, let's rap it up.",
+  "Obey the riots. Not the attacks.",
+  "There is a close link between education and death.",
+  "Who are Rick and, I cannot stress this enough, Morty?",
+  "Stop educating.",
+  "You are a huuuuuuuuuuuge dog.",
+  "Support a prostitute.",
+  "Donate to my patreon and I will shout your name.",
+  "Should we make tomorrow respectable?",
+  "Modern art is to have lots of cats."
+] 
+
+
+@bot.command(name='kik', help='Kiks jim')
+@commands.has_role('Admin')
+async def check(ctx, *targets: discord.Member):
+    print(targets)
+    if any(targets):
+      target = targets[0]
+      response = '<@' + str(target.id) + '> has been kiked'
+    else:
+      for member in ctx.guild.members:
+        if member.name == "Jim":
+          break
+      response = "kicked <@" + str(member.id) + ">"
+    #await target.kick()
+    await ctx.send(response)
+
+@bot.command(name='rollHouse', help='rolls house')
+@commands.has_role('Admin')
+async def check(ctx, target: discord.Member):
+    houses = []
+    houses.append(get(ctx.guild.roles, name="House Husky"))
+    houses.append(get(ctx.guild.roles, name="House Fox"))
+    houses.append(get(ctx.guild.roles, name="House Narwhal"))
+    for role in target.roles:
+        if role in houses:
+            await target.remove_roles(role)
+    
+    new = random.choice(houses)
+    print(new)
+    try:
+        await target.add_roles(new)
+        response = target.nick + ' is assigned to ' + new.name
+    except Exception:
+        response = Exception
+    await ctx.send(response)
+
+@bot.command(name='consent', help='Gives consent role')
+async def consent(ctx):
+    if ctx.channel.name == 'welcome':
+      target = ctx.message.author
+      role = get(ctx.guild.roles, name="Consent")
+      try:
+        await target.remove_roles(role)
+      except:
+        pass
+      await target.add_roles(role)
+      await target.add_roles(get(ctx.guild.roles, name="verifying"))
+      await ctx.message.delete()
+      verif = get(ctx.guild.channels, name="verification")
+      response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations. Your Consent role gives you access to the server and signifies that you accept the consequences for not abiding by the rules.  This message will delete in 2 minutes"
+      await verif.send(response, delete_after=120)
+    else:
+      response = "This command is restricted to the welcome channel"
+      await ctx.send(response)
+  
 @bot.command(name='check', help='responds')
 async def check(ctx):
     response = random.choice(checks)
