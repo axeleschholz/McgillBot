@@ -189,30 +189,34 @@ async def verify(ctx):
       await ctx.send(response)
 
   else:
-    for guild in bot.guilds:
-        if guild.name == GUILD:
-            break
-    
-    target = ctx.message.author
-    members = [member for member in guild.members]
-    
-    checkrole = get(guild.roles, name="Certified Admitted")
-    role = get(ctx.guild.roles, name="Verified")
-    if role in target.roles:
-      response = "You're already verified, thanks for checking!"
-    elif target in members:
-        checked = False
-        member = members[members.index(target)]
-        for otherrole in member.roles:
-            if otherrole == checkrole:
-                checked = True
-        if checked:
-            response = "You're verified, have a lovely day"
-            await target.add_roles(role)
-        else:
-            response = "You're on the McGill server but not verified, go go go!"
+    if ctx.channel.name == 'verification':
+      for guild in bot.guilds:
+          if guild.name == GUILD:
+              break
+
+      target = ctx.message.author
+      members = [member for member in guild.members]
+
+      checkrole = get(guild.roles, name="Certified Admitted")
+      role = get(ctx.guild.roles, name="Verified")
+      if role in target.roles:
+        response = "You're already verified, thanks for checking!"
+      elif target in members:
+          checked = False
+          member = members[members.index(target)]
+          for otherrole in member.roles:
+              if otherrole == checkrole:
+                  checked = True
+          if checked:
+              response = "You're verified, have a lovely day"
+              await target.add_roles(role)
+          else:
+              response = "You're on the McGill server but not verified, go go go!"
+      else:
+          response = 'You are not verified, to become verified, logon to the mcgill 2020 server'
+      await ctx.send(response, delete_after=10)
     else:
-        response = 'You are not verified, to become verified, logon to the mcgill 2020 server'
-    await ctx.send(response)
+      response = "This command is restricted to the verification channel"
+      await ctx.send(response)
 
 bot.run(TOKEN)
