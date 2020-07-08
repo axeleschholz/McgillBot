@@ -197,8 +197,10 @@ async def verify(ctx):
 
       target = ctx.message.author
       members = [member for member in guild.members]
-      
-      await ctx.message.delete()
+      try:
+          await ctx.message.delete()
+      except:
+          pass
       checkrole = get(guild.roles, name="Certified Admitted")
       role = get(ctx.guild.roles, name="Verified")
       if role in target.roles:
