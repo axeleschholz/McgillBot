@@ -96,7 +96,7 @@ async def check(ctx, *targets: discord.Member):
     await ctx.send(response)
 
 @bot.command(name='roll', help='admin command - rolls house for target')
-@commands.has_role('Admin')
+@commands.has_role('Moderator')
 async def check(ctx, target: discord.Member):
     houses = []
     for role in ctx.guild.roles:
