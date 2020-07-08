@@ -128,7 +128,8 @@ async def consent(ctx):
       except:
         pass
       await target.add_roles(role)
-      await target.add_roles(get(ctx.guild.roles, name="verifying"))
+      if not ctx.guild.name == GUILD:
+        await target.add_roles(get(ctx.guild.roles, name="verifying"))
       await ctx.message.delete()
       verif = get(ctx.guild.channels, name="verification")
       response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations. Your Consent role gives you access to the server and signifies that you accept the consequences for not abiding by the rules.  This message will delete in 2 minutes"
