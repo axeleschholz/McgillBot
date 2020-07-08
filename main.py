@@ -120,7 +120,7 @@ async def check(ctx, target: discord.Member):
 
 @bot.command(name='consent', help='Gives consent role')
 async def consent(ctx):
-    if ctx.channel.name == 'welcome':
+    if ctx.channel.name == 'welcome' or ctx.channel.name == 'consent':
       target = ctx.message.author
       role = get(ctx.guild.roles, name="Consent")
       try:
@@ -134,7 +134,7 @@ async def consent(ctx):
       response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations. Your Consent role gives you access to the server and signifies that you accept the consequences for not abiding by the rules.  This message will delete in 2 minutes"
       await verif.send(response, delete_after=120)
     else:
-      response = "This command is restricted to the welcome channel"
+      response = "That command is restricted on this channel"
       await ctx.send(response)
   
 @bot.command(name='check', help='responds')
