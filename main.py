@@ -134,8 +134,8 @@ async def consent(ctx):
       verif = get(ctx.guild.channels, name="verification")
       if not verif:
         verif = get(ctx.guild.channels, name="enquiries")
-      response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations. Your Consent role gives you access to the server and signifies that you accept the consequences for not abiding by the rules.  This message will delete in 2 minutes"
-      await verif.send(response, delete_after=120)
+      response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations. Your Consent role gives you access to the server and signifies that you accept the consequences for not abiding by the rules."
+      await verif.send(response, delete_after=30)
     else:
       response = "That command is restricted on this channel"
       await ctx.send(response)
@@ -222,7 +222,7 @@ async def verify(ctx):
               response = "You're on the McGill server but not verified, go go go!"
       else:
           response = 'You are not verified, to become verified, logon to the mcgill 2020 server'
-      await ctx.send(response, delete_after=10)
+      await ctx.send("<@" + str(ctx.author.id) + "> " + response, delete_after=10)
     else:
       response = "This command is restricted to the verification channel"
       await ctx.send(response)
