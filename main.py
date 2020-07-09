@@ -100,7 +100,7 @@ async def check(ctx, *targets: discord.Member):
 async def check(ctx, target: discord.Member):
     houses = []
     for role in ctx.guild.roles:
-      if 'House' in role.name:
+      if 'House ' in role.name:
         houses.append(role)
     if not any(houses):
       await ctx.send("There don't seem to be houses on this channel.")
