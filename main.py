@@ -186,7 +186,8 @@ async def verify(ctx):
               response = "You're on the McGill server but not verified, go go go!"
       else:
           response = 'You are not verified, to become verified, logon to the mcgill 2020 server'
-      await ctx.send("<@" + str(member.id) + "> " + response, delete_after=10)
+     await ctx.send("<@" + str(ctx.author.id) + "> " + response, delete_after=10)
+     
     else:
       response = "This command is restricted to the verification channel"
       await ctx.send(response)
