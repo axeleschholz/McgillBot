@@ -166,6 +166,8 @@ async def verify(ctx):
       await ctx.message.delete()
       checkrole = get(guild.roles, name="Certified Admitted")
       role = get(ctx.guild.roles, name="Verified")
+      if not role:
+        role = get(ctx.guild.roles, id=725648846675247134)
       if role in target.roles:
         response = "You're already verified, thanks for checking!"
       elif target in members:
