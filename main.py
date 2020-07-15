@@ -123,6 +123,8 @@ async def consent(ctx):
     if ctx.channel.name == 'welcome' or ctx.channel.name == 'consent':
       target = ctx.message.author
       role = get(ctx.guild.roles, name="Consent")
+      if not role:
+        role = get(ctx.guild.roles, name="Consenting")
       try:
         await target.remove_roles(role)
       except:
