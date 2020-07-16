@@ -82,7 +82,7 @@ quotes = [
 @bot.event
 async def on_member_join(member):
     print(f"{member} has joined {member.guild.name}")
-    if member.guild.name == GUILD:
+    if member.guild.name == GUILD or member.guild.name == "McGill | Faculty of Education":
       place = get(member.guild.channels, name="consent")
       joinmessage = f"Welcome {member.mention}! \n To get started, first read our rules in #information, and if you agree to abide by those rules, type **.iam Consenting** \n Then you'll want to verify your status as a McGill student in #verification. Feel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
       await place.send(joinmessage)
