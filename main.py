@@ -81,7 +81,7 @@ quotes = [
 
 @bot.event
 async def on_member_join(member):
-    print(f"{member} has joined {member.server.name}")
+    print(f"{member} has joined {member.guild.name}")
     if member.server.name == GUILD:
       for channel in member.server.channels:
           if str(channel) == "consent":
