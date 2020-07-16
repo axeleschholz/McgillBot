@@ -79,6 +79,14 @@ quotes = [
   "Modern art is to have lots of cats."
 ] 
 
+@bot.event
+async def on_member_join(member):
+    print(f"{member} has joined {member.server.name}")
+    if member.server.name == GUILD:
+      for channel in member.server.channels:
+          if str(channel) == "consent":
+              await bot.send_message(f"""Welcome to the server
+                                     {member.mention}""")
 
 @bot.command(name='kik', help='Kiks jim')
 @commands.has_role('Admin')
