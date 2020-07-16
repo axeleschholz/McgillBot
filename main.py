@@ -142,29 +142,33 @@ async def consent(ctx):
       response = "That command is restricted on this channel"
       await ctx.send(response)
       
-@bot.command(name='I Consent', help='A stylistic consent for the main server')
-async def consent(ctx):
-    if ctx.channel.name == 'welcome' or ctx.channel.name == 'consent':
-      target = ctx.message.author
-      role = get(ctx.guild.roles, name="Consent")
-      if not role:
-        role = get(ctx.guild.roles, name="Consenting")
-      try:
-        await target.remove_roles(role)
-      except:
-        pass
-      await target.add_roles(role)
-      if not ctx.guild.name == GUILD:
-        await target.add_roles(get(ctx.guild.roles, name="verifying"))
-      await ctx.message.delete()
-      verif = get(ctx.guild.channels, name="verification")
-      if not verif:
-        verif = get(ctx.guild.channels, name="enquiries")
-      response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations in a solemn oath that must never be broken. Your Consenting role gives you access to the server and signifies that you accept the eternal consequences for not abiding by the rules."
-      await verif.send(response, delete_after=30)
+@bot.command(name='I', help='"Consent" - A stylistic consent for the main McGill server')
+async def consent(ctx, arg):
+    if arg == "Consent":
+      if ctx.channel.name == 'welcome' or ctx.channel.name == 'consent':
+        target = ctx.message.author
+        role = get(ctx.guild.roles, name="Consent")
+        if not role:
+          role = get(ctx.guild.roles, name="Consenting")
+        try:
+          await target.remove_roles(role)
+        except:
+          pass
+        await target.add_roles(role)
+        if not ctx.guild.name == GUILD:
+          await target.add_roles(get(ctx.guild.roles, name="verifying"))
+        await ctx.message.delete()
+        verif = get(ctx.guild.channels, name="verification")
+        if not verif:
+          verif = get(ctx.guild.channels, name="enquiries")
+        response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations in a solemn oath that must never be broken. Your Consenting role gives you access to the server and signifies that you accept the eternal consequences for not abiding by the rules."
+        await verif.send(response, delete_after=30)
+      else:
+        response = "That command is restricted on this channel"
+        await ctx.send(response)
     else:
-      response = "That command is restricted on this channel"
-      await ctx.send(response)
+      response = "Please type .I Consent, be careful of spelling and case."
+      await ctx.send(response, delete_after=5)
   
 @bot.command(name='check', help='responds')
 async def check(ctx):
