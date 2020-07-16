@@ -91,6 +91,7 @@ async def on_member_join(member):
       place = get(member.guild.channels, name="consent")
       joinmessage = f"Welcome {member.mention}! \nTo get started, first read our rules in #information, and if you agree to abide by those rules, type **.I Consent** \nThen you'll want to verify your status as a McGill student in #verification. Feel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
       await place.send(joinmessage, delete_after=200)
+      
   
 @bot.command(name='kik', help='Kiks jim')
 @commands.has_role('Admin')
@@ -168,7 +169,7 @@ async def consent(ctx, arg):
         except:
           pass
         await target.add_roles(role)
-        await ctx.send("<@" + target.id + "> " + random.choice(consents))
+        await ctx.send("<@" + str(target.id) + "> " + random.choice(consents))
         if not ctx.guild.name == GUILD:
           await target.add_roles(get(ctx.guild.roles, name="verifying"))
         verif = get(ctx.guild.channels, name="verification")
