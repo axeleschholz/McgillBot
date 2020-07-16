@@ -89,6 +89,8 @@ async def on_member_join(member):
     print(f"{member} has joined {member.guild.name}")
     if member.guild.name == GUILD or member.guild.name == "McGill | Faculty of Education":
       place = get(member.guild.channels, name="consent")
+      if not place:
+        place = get(member.guild.channels, name="traffic")
       joinmessage = f"Welcome {member.mention}! \n To get started, first read our rules in #information, and if you agree to abide by those rules, type **.iam Consenting** \n Then you'll want to verify your status as a McGill student in #verification. Feel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
       await place.send(joinmessage, delete_after=60)
   
@@ -99,12 +101,13 @@ async def check(ctx, *targets: discord.Member):
     if any(targets):
       target = targets[0]
       response = '<@' + str(target.id) + '> has been kiked'
+      #await target.kick()
     else:
       for member in ctx.guild.members:
         if member.name == "Jim":
           break
       response = "kicked <@" + str(member.id) + ">"
-    #await target.kick()
+    
     await ctx.send(response)
 
 @bot.command(name='roll', help='admin command - rolls house for target')
