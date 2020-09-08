@@ -17,6 +17,7 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 bot = commands.Bot(command_prefix='.')
 
+codes = {}
 checks = [
   'check check, roger that',
   "check 1 2, we're all good here",
@@ -202,7 +203,7 @@ async def quote(ctx):
     response = random.choice(quotes)
     await ctx.send(response)
 
-@bot.command(name='newverify', help='verifies person over dm')
+@bot.command()
 async def newverify(ctx):
     user = ctx.message.author
     message = "Please respond with your mcgill email address in order to verify your identity"
@@ -210,6 +211,17 @@ async def newverify(ctx):
  
 @bot.command(name='email', help='sends email verification code')
 async def email(ctx, arg):
+  user = ctx.message.author
+  
+  def generate_code():
+    global codes
+    code = ''
+    for i in range(4)
+      num = random.randint(0,9)
+      code += num
+    codes[code] = user
+    return code
+  
   def send_msg(sender, to, subject, body):
     msg = MIMEMultipart()
     msg['From'] = sender
@@ -217,16 +229,33 @@ async def email(ctx, arg):
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
     s.send_message(msg)
-
+    
   if __name__ == "__main__":
     s = smtplib.SMTP(host='smtp.gmail.com', port=587)
     s.starttls()
     s.login('martythemcgillbot@gmail.com', 'emailtime')
-
-    send_msg('martythemcgillbot@gmail.com', arg, 'test', 'testing')
+    
+    body = 'Your verification code is ' + generate_code() + '\n This code is valid for 30 minutes \n\n DO NOT REPLY TO THIS EMAIL'
+    send_msg('martythemcgillbot@gmail.com', arg, 'Verification', 'testing')
 
     s.quit()
   
+  response = 'An email has been sent to that address with a verification code. Please respond to this message with **.code (code)** to be verified, thanks!"
+  await ctx.send(response)
+ 
+@bot.command()
+async def code(ctx):
+    user = ctx.message.author
+    if code in list(codes.keys()):
+      if user == codes[code]:
+        message = "whooooo"
+      else:
+        message = "That's someone else"
+    else:
+      message = "Invalid code"
+      
+    await user.send(message)
+    
 @bot.command(name='verify', help='verifies that person is in server')
 async def verify(ctx):
   if ctx.guild.name == "McGill CS (first-year)":
