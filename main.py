@@ -198,6 +198,11 @@ async def check(ctx, *args):
 async def quote(ctx):
     response = random.choice(quotes)
     await ctx.send(response)
+
+@bot.command(name='newverify', help='verifies person over dm')
+async def newverify(ctx, user: discord.User, *, message=None):
+    message = message or "This Message is sent via DM"
+    await user.send(message)
   
 @bot.command(name='verify', help='verifies that person is in server')
 async def verify(ctx):
