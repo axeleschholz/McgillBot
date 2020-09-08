@@ -240,7 +240,7 @@ async def email(ctx, arg):
 
     s.quit()
   
-  response = 'An email has been sent to that address with a verification code. Please respond to this message with **.code (code)** to be verified, thanks!"
+  response = "An email has been sent to that address with a verification code. Please respond to this message with **.code (code)** to be verified, thanks!"
   await ctx.send(response)
  
 @bot.command()
