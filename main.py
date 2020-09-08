@@ -200,8 +200,9 @@ async def quote(ctx):
     await ctx.send(response)
 
 @bot.command(name='newverify', help='verifies person over dm')
-async def newverify(ctx, user: discord.User, *, message=None):
-    message = message or "This Message is sent via DM"
+async def newverify(ctx):
+    user = ctx.message.author
+    message = "Please respond with your mcgill email address in order to verify your identity"
     await user.send(message)
   
 @bot.command(name='verify', help='verifies that person is in server')
