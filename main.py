@@ -218,7 +218,7 @@ async def email(ctx, arg):
     code = ''
     for i in range(4):
       num = random.randint(0,9)
-      code += num
+      code += str(num)
     codes[code] = user
     return code
   
