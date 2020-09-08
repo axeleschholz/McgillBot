@@ -236,7 +236,7 @@ async def email(ctx, arg):
     s.login('martythemcgillbot@gmail.com', 'emailtime')
     
     body = 'Your verification code is ' + generate_code() + '\n This code is valid for 30 minutes \n\n DO NOT REPLY TO THIS EMAIL'
-    send_msg('martythemcgillbot@gmail.com', arg, 'Verification', 'testing')
+    send_msg('martythemcgillbot@gmail.com', arg, 'Verification', body)
 
     s.quit()
   
