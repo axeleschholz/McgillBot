@@ -145,7 +145,7 @@ async def consent(ctx):
         pass
       await target.add_roles(role)
       if not ctx.guild.name == GUILD:
-        await target.add_roles(get(ctx.guild.roles, name="verifying"))
+        await target.add_roles(get(ctx.guild.roles, name="Verifying"))
       await ctx.message.delete()
       verif = get(ctx.guild.channels, name="verification")
       if not verif:
