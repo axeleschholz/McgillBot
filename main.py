@@ -7,6 +7,9 @@ from discord.ext import commands
 from discord.utils import get
 import random
 
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 TOKEN = os.getenv('DISCORD_TOKEN')
