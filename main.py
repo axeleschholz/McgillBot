@@ -204,6 +204,25 @@ async def newverify(ctx):
     user = ctx.message.author
     message = "Please respond with your mcgill email address in order to verify your identity"
     await user.send(message)
+ 
+@bot.command(name='email', help='sends email verification code')
+async def email(ctx, arg):
+  def send_msg(sender, to, subject, body):
+    msg = MIMEMultipart()
+    msg['From'] = sender
+    msg['To'] = to
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+    s.send_message(msg)
+
+  if __name__ == "__main__":
+    s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+    s.starttls()
+    s.login('martythemcgillbot@gmail.com', 'emailtime')
+
+    send_msg('martythemcgillbot@gmail.com', arg, 'test', 'testing')
+
+    s.quit()
   
 @bot.command(name='verify', help='verifies that person is in server')
 async def verify(ctx):
