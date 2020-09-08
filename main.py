@@ -235,7 +235,7 @@ async def email(ctx, arg):
     s.starttls()
     s.login('martythemcgillbot@gmail.com', 'emailtime')
     
-    body = 'Your verification code is ' + generate_code() + '\n This code is valid for 30 minutes \n\n DO NOT REPLY TO THIS EMAIL'
+    body = 'Your verification code is ' + generate_code() + '\nThis code is valid for 30 minutes. \n\nDO NOT REPLY TO THIS EMAIL'
     send_msg('martythemcgillbot@gmail.com', arg, 'Verification', body)
 
     s.quit()
@@ -244,15 +244,17 @@ async def email(ctx, arg):
   await ctx.send(response)
  
 @bot.command()
-async def code(ctx):
+async def code(ctx, arg):
+    code = arg
     user = ctx.message.author
     if code in list(codes.keys()):
       if user == codes[code]:
         message = "whooooo"
+        codes.remove(code)
       else:
         message = "That's someone else"
     else:
-      message = "Invalid code"
+      message = "Invalid code, please try again or contact a moderator for help.\nIf you did not request the email in the last 30 minutes, please do so again."
       
     await user.send(message)
     
