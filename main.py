@@ -216,7 +216,7 @@ async def email(ctx, arg):
   def generate_code():
     global codes
     code = ''
-    for i in range(4)
+    for i in range(4):
       num = random.randint(0,9)
       code += num
     codes[code] = user
