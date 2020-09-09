@@ -247,13 +247,13 @@ async def code(ctx, arg):
         #name breakdown
         email = codes[code][1]
         name = email.split('@')[0].split('.')
-        for part in name:
+        for y,part in enumerate(name):
           new = ''
           for x,letter in enumerate(part):
             if x == 0:
               letter = letter.upper()
             new += letter
-          part = new
+          name[y] = new
         nickname = name[0] + ' ' + name[1]
         
         #finish
