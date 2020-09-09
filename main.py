@@ -211,17 +211,20 @@ async def quote(ctx):
     await ctx.send(response)
 
 @bot.command()
-async def newverify(ctx, arg):
-    if not arg:
-      member = ctx.message.author
+async def newverify(ctx, *targets: discord.Member):
+    if not any(targets):
+      members = [ctx.message.author]
     else:
-      member = arg
-    guild = get(bot.guilds, name=member.guild.name)
-    info = get(guild.channels, name='information')
-    message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + str(info.id) + ">.\nBy verifying yourself, you agree to our rules set out in <#" + str(info.id) + "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
-    await member.send(message)
-    nextmessage = "Please type **.email firstname.lastname@mail.mcgill.ca** with your mcgill email adress to verify yourself!"
-    await member.send(nextmessage)
+      members = []
+      for target in targets:
+        members.append(target)
+    for member in members:
+      guild = get(bot.guilds, name=member.guild.name)
+      info = get(guild.channels, name='information')
+      message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + str(info.id) + ">.\nBy verifying yourself, you agree to our rules set out in <#" + str(info.id) + "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
+      await member.send(message)
+      nextmessage = "Please type **.email firstname.lastname@mail.mcgill.ca** with your mcgill email adress to verify yourself!"
+      await member.send(nextmessage)
     
 @bot.command(name='email', help='sends email verification code')
 async def email(ctx, arg):
