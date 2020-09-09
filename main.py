@@ -278,7 +278,7 @@ async def code(ctx, arg):
         codes.pop(code)
         place = get(guild.channels, name='general')
         await target.edit(nick=name)
-        welcome = "Welcome! @<" + str(target.id) + ">"
+        welcome = "Welcome! <@" + str(target.id) + ">"
         await user.send(message)
         await place.send(welcome)
       else:
