@@ -229,7 +229,9 @@ async def email(ctx, arg):
             for i in range(4):
                 num = random.randint(0,9)
                 code += str(num)
-            codes[code] = user
+            name = arg.split('@')[0].split('.')
+            nickname = name[0] + ' ' + name[1]
+            codes[code] = [user, arg]
             return code
         
         def send_msg(sender, to, subject, body):
@@ -262,14 +264,16 @@ async def code(ctx, arg):
     code = arg
     user = ctx.message.author
     if code in list(codes.keys()):
-      if user == codes[code]:
+      if user == codes[code][0]:
         guild = get(bot.guilds, name=GUILD)
         target = get(guild.members, id=user.id)
         role = get(guild.roles, name="Certified Admitted")
+        name = codes[code][1]
         await target.add_roles(role)
         message = "You're all set, thanks for verifying and please proceed to the main server. Enjoy!"
         codes.pop(code)
         place = get(guild.channels, name='general')
+        await target.edit(nick=name)
         welcome = "Welcome! @<" + str(target.id) + ">"
         await user.send(message)
       else:
