@@ -275,12 +275,14 @@ async def code(ctx, arg):
         guild = get(bot.guilds, name=GUILD)
         target = get(guild.members, id=user.id)
         role = get(guild.roles, name="Certified Admitted")
-        name = codes[code][1]
+        email = codes[code][1]
+        name = email.split('@')[0].split('.')
+        nickname = name[0] + ' ' + name[1]
         await target.add_roles(role)
         message = "You're all set, thanks for verifying and please proceed to the main server. Enjoy!"
         codes.pop(code)
         place = get(guild.channels, name='general')
-        await target.edit(nick=name)
+        await target.edit(nick=nickname)
         welcome = "Welcome! <@" + str(target.id) + ">"
         await user.send(message)
         await place.send(welcome)
