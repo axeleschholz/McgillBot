@@ -94,7 +94,7 @@ async def on_member_join(member):
     if member.guild.name == GUILD:
       guild = get(bot.guilds, name=member.guild.name)
       info = get(guild.channels, name='information')
-      message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + info.id + ">.\nBy verifying yourself, you agree to our rules set out in <#" + info.id "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
+      message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + str(info.id) + ">.\nBy verifying yourself, you agree to our rules set out in <#" + str(info.id) "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
       
      await member.send(message)
 
@@ -213,10 +213,7 @@ async def newverify(ctx):
     member = ctx.message.author
     guild = get(bot.guilds, name=member.guild.name)
     info = get(guild.channels, name='information')
-    message = "Welcome <@" + str(member.id) + ">!\n
-               You should give our rules a read at <#" + info.id + ">.\n
-               By verifying yourself, you agree to our rules set out in <#" + info.id "> and failure to abide by the rules may result in a warning or ban.\n
-               Feel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
+    message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + str(info.id) + ">.\nBy verifying yourself, you agree to our rules set out in <#" + str(info.id) "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
     await member.send(message)
     
 @bot.command(name='email', help='sends email verification code')
