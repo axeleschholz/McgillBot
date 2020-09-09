@@ -163,8 +163,7 @@ async def quote(ctx):
 @bot.command()
 @commands.has_role('Tech Support')
 async def DM(ctx, user: discord.User, *, message=None):
-message = message
-await user.send(message)
+  await user.send(message)
 
 @bot.command()
 async def newverify(ctx, *targets: discord.Member):
