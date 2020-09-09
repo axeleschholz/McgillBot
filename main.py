@@ -95,11 +95,11 @@ async def on_member_join(member):
       guild = get(bot.guilds, name=member.guild.name)
       info = get(guild.channels, name='information')
       log = get(guild.channels, name='verification-log')
-      entry = "```<@" + str(member.id) + "> has joined the server, welcome message has been sent.```"
+      entry = "<@" + str(member.id) + "> has joined the server, welcome message has been sent."
       message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + str(info.id) + ">.\nBy verifying yourself, you agree to our rules set out in <#" + str(info.id) + "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
       
       await member.send(message)
-      nextmessage = "Please type **.email firstname.lastname@mail.mcgill.ca** with your mcgill email adress to verify yourself!"
+      nextmessage = "Please enter your mcgill email address in the following format to verify yourself: ```.email firstname.lastname@mail.mcgill.ca```"
       await member.send(nextmessage)
       await log.send(entry)
 
@@ -214,7 +214,7 @@ async def email(ctx, arg):
 
             s.quit()
         
-        response = "An email has been sent to that address with a verification code. Please respond to this message with: '''.code (insert code here)''' to be verified, thanks!"
+        response = "An email has been sent to that address with a verification code. Please respond to this message with: ```.code (insert code here)``` to be verified, thanks!"
         entries.append("<@" + str(user.id) + "> has been sent a verification code of " + code + ".")
         
     else:
