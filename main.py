@@ -261,7 +261,7 @@ async def code(ctx, arg):
         message = "You're all set, thanks for verifying and please proceed to the main server. Enjoy!"
         entries.append("<@" + str(target.id) + "> has been verified.")
         codes.pop(code)
-        place = get(guild.channels, name='general')
+        place = get(guild.channels, name='welcome')
         await target.edit(nick=nickname)
         entries.append("<@" + str(target.id) + ">'s nickname has been changed to " + nickname + ".")
         welcome = "Welcome! <@" + str(target.id) + ">"
@@ -273,7 +273,7 @@ async def code(ctx, arg):
         await user.send(message)
     else:
         message = "Invalid code, please try again or contact a moderator for help.\nIf you did not request the email in the last 10 minutes, please do so again."
-        entries.append("<@" + str(target.id) + ">'s code was invalid.")
+        entries.append("<@" + str(user.id) + ">'s code was invalid.")
         await user.send(message)
     
     for each in entries:
