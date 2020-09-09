@@ -166,8 +166,8 @@ async def consent(ctx):
       response = "That command is restricted on this channel"
       await ctx.send(response)
       
-@bot.command(name='I', help='"Consent" - A stylistic consent for the main McGill server')
-async def consent(ctx, arg):
+@bot.command()
+async def I(ctx, arg):
     if arg == "Consent":
       if ctx.channel.name == 'welcome' or ctx.channel.name == 'consent':
         target = ctx.message.author
@@ -223,7 +223,7 @@ async def newverify(ctx, *targets: discord.Member):
       info = get(guild.channels, name='information')
       message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + str(info.id) + ">.\nBy verifying yourself, you agree to our rules set out in <#" + str(info.id) + "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
       await member.send(message)
-      nextmessage = "Please type **.email firstname.lastname@mail.mcgill.ca** with your mcgill email adress to verify yourself!"
+      nextmessage = "Please enter your mcgill email address in the following format to verify yourself: ```.email firstname.lastname@mail.mcgill.ca```"
       await member.send(nextmessage)
     
 @bot.command(name='email', help='sends email verification code')
@@ -259,7 +259,7 @@ async def email(ctx, arg):
 
             s.quit()
         
-        response = "An email has been sent to that address with a verification code. Please respond to this message with **.code (code)** to be verified, thanks!"
+        response = "An email has been sent to that address with a verification code. Please respond to this message with: '''.code (insert code here)''' to be verified, thanks!"
         
     else:
         response = "That is not a valid mcgill email address."
@@ -272,12 +272,24 @@ async def code(ctx, arg):
     user = ctx.message.author
     if code in list(codes.keys()):
       if user == codes[code][0]:
+        #get objects
         guild = get(bot.guilds, name=GUILD)
         target = get(guild.members, id=user.id)
         role = get(guild.roles, name="Certified Admitted")
+        
+        #name breakdown
         email = codes[code][1]
         name = email.split('@')[0].split('.')
+        for part in name:
+          new = ''
+          for x,letter in enumerate(part):
+            if x == 0:
+              letter = letter.upper()
+            new.append(letter) 
+          part = new
         nickname = name[0] + ' ' + name[1]
+        
+        #finish
         await target.add_roles(role)
         message = "You're all set, thanks for verifying and please proceed to the main server. Enjoy!"
         codes.pop(code)
