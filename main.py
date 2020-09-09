@@ -94,11 +94,14 @@ async def on_member_join(member):
     if member.guild.name == GUILD:
       guild = get(bot.guilds, name=member.guild.name)
       info = get(guild.channels, name='information')
+      log = get(guild.channels, name='verification-log')
+      entry = "```<@" + str(member.id) + "> has joined the server, welcome message has been sent.```"
       message = "Welcome <@" + str(member.id) + ">!\nYou should give our rules a read at <#" + str(info.id) + ">.\nBy verifying yourself, you agree to our rules set out in <#" + str(info.id) + "> and failure to abide by the rules may result in a warning or ban.\nFeel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
       
       await member.send(message)
       nextmessage = "Please type **.email firstname.lastname@mail.mcgill.ca** with your mcgill email adress to verify yourself!"
       await member.send(nextmessage)
+      await log.send(entry)
 
 
       
@@ -142,59 +145,6 @@ async def check(ctx, target: discord.Member):
           response = Exception
       await ctx.send(response)
 
-@bot.command(name='consent', help='Gives the consent role')
-async def consent(ctx):
-    if ctx.channel.name == 'welcome' or ctx.channel.name == 'consent':
-      target = ctx.message.author
-      role = get(ctx.guild.roles, name="Consent")
-      if not role:
-        role = get(ctx.guild.roles, name="Consenting")
-      try:
-        await target.remove_roles(role)
-      except:
-        pass
-      await target.add_roles(role)
-      if not ctx.guild.name == GUILD:
-        await target.add_roles(get(ctx.guild.roles, name="Verifying"))
-      await ctx.message.delete()
-      verif = get(ctx.guild.channels, name="verification")
-      if not verif:
-        verif = get(ctx.guild.channels, name="enquiries")
-      response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations. Your Consent role gives you access to the server and signifies that you accept the consequences for not abiding by the rules."
-      await verif.send(response, delete_after=30)
-    else:
-      response = "That command is restricted on this channel"
-      await ctx.send(response)
-      
-@bot.command()
-async def I(ctx, arg):
-    if arg == "Consent":
-      if ctx.channel.name == 'welcome' or ctx.channel.name == 'consent':
-        target = ctx.message.author
-        role = get(ctx.guild.roles, name="Consent")
-        if not role:
-          role = get(ctx.guild.roles, name="Consenting")
-        try:
-          await target.remove_roles(role)
-        except:
-          pass
-
-        await target.add_roles(role)
-        await ctx.send("<@" + str(target.id) + "> " + random.choice(consents))
-        if not ctx.guild.name == GUILD:
-          await target.add_roles(get(ctx.guild.roles, name="verifying"))
-        verif = get(ctx.guild.channels, name="verification")
-        if not verif:
-          verif = get(ctx.guild.channels, name="enquiries")
-        response = "<@" + str(target.id) + ">, you have agreed to the rules and regulations in a solemn oath that must never be broken. Your Consenting role gives you access to the server and signifies that you accept the eternal consequences for not abiding by the rules."
-        await verif.send(response, delete_after=30)
-      else:
-        response = "That command is restricted on this channel"
-        await ctx.send(response)
-    else:
-      response = "Please type .I Consent, be careful of spelling and case."
-      await ctx.send(response, delete_after=5)
-  
 @bot.command(name='check', help='responds')
 async def check(ctx):
     response = random.choice(checks)
@@ -229,6 +179,10 @@ async def newverify(ctx, *targets: discord.Member):
 @bot.command(name='email', help='sends email verification code')
 async def email(ctx, arg):
     user = ctx.message.author
+    guild = get(bot.guilds, name=GUILD)
+    log = get(guild.channels, name='verification-log')
+    entries = []
+    entries.append("<@" + str(user.id) + "> has submitted their email")
     if '@mail.mcgill.ca' in arg or arg == "axel.eschholz@gmail.com":
         def generate_code():
             global codes
@@ -236,10 +190,11 @@ async def email(ctx, arg):
             for i in range(4):
                 num = random.randint(0,9)
                 code += str(num)
-            name = arg.split('@')[0].split('.')
-            nickname = name[0] + ' ' + name[1]
-            codes[code] = [user, arg]
-            return code
+            if code not in list(codes.keys()):
+              codes[code] = [user, arg]
+              return code
+            else:
+              return generate_code()
         
         def send_msg(sender, to, subject, body):
             msg = MIMEMultipart()
@@ -253,23 +208,31 @@ async def email(ctx, arg):
             s = smtplib.SMTP(host='smtp.gmail.com', port=587)
             s.starttls()
             s.login('martythemcgillbot@gmail.com', 'emailtime')
-            
-            body = 'Your verification code is ' + generate_code() + '\nThis code is valid for 10 minutes. \n\nDO NOT REPLY TO THIS EMAIL'
+            code = generate_code()
+            body = 'Your verification code is ' + code + '\nThis code is valid for 10 minutes. \n\nDO NOT REPLY TO THIS EMAIL'
             send_msg('martythemcgillbot@gmail.com', arg, 'Verification', body)
 
             s.quit()
         
         response = "An email has been sent to that address with a verification code. Please respond to this message with: '''.code (insert code here)''' to be verified, thanks!"
+        entries.append("<@" + str(user.id) + "> has been sent a verification code of " + code + ".")
         
     else:
         response = "That is not a valid mcgill email address."
+        entries.append("<@" + str(user.id) + ">'s email was not valid")
 
     await ctx.send(response)
-
+    for each in entries:
+      await log.send(each)
+      
 @bot.command()
 async def code(ctx, arg):
     code = arg
     user = ctx.message.author
+    guild = get(bot.guilds, name=GUILD)
+    log = get(guild.channels, name='verification-log')
+    entries = []
+    entries.append("<@" + str(user.id) + "> has submitted the code: " + code + ".")
     if code in list(codes.keys()):
       if user == codes[code][0]:
         #get objects
@@ -292,20 +255,26 @@ async def code(ctx, arg):
         #finish
         await target.add_roles(role)
         message = "You're all set, thanks for verifying and please proceed to the main server. Enjoy!"
+        entries.append("<@" + str(target.id) + "> has been verified.")
         codes.pop(code)
         place = get(guild.channels, name='general')
         await target.edit(nick=nickname)
+        entries.append("<@" + str(target.id) + ">'s nickname has been changed to " + nickname + ".")
         welcome = "Welcome! <@" + str(target.id) + ">"
         await user.send(message)
         await place.send(welcome)
       else:
         message = "That's someone else's code, don't try to fool me!"
+        entries.append("<@" + str(target.id) + "> tried to use someone else's code! Arrest them!")
         await user.send(message)
     else:
         message = "Invalid code, please try again or contact a moderator for help.\nIf you did not request the email in the last 10 minutes, please do so again."
-    
+        entries.append("<@" + str(target.id) + ">'s code was invalid.")
         await user.send(message)
     
+    for each in entries:
+      await log.send(each)
+      
 @bot.command(name='verify', help='verifies that person is in server')
 async def verify(ctx):
   if ctx.guild.name == "McGill CS (first-year)":
