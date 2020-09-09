@@ -277,6 +277,7 @@ async def code(ctx, arg):
         await target.edit(nick=name)
         welcome = "Welcome! @<" + str(target.id) + ">"
         await user.send(message)
+        await place.send(welcome)
       else:
         message = "That's someone else's code, don't try to fool me!"
         await user.send(message)
