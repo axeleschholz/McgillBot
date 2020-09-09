@@ -92,9 +92,16 @@ consents = ["you're all set!",
 async def on_member_join(member):
     print(f"{member} has joined {member.guild.name}")
     if member.guild.name == GUILD:
-      place = get(member.guild.channels, name="consent")
-      joinmessage = f"Welcome {member.mention}! \nTo get started, first read our rules in #information, and if you agree to abide by those rules, type **.I Consent** \nThen you'll want to verify your status as a McGill student in #verification. Feel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
-      await place.send(joinmessage, delete_after=200)
+      guild = get(bot.guilds, name=member.guild.name)
+      info = get(guild.channels, name='information')
+      message = "Welcome <@" + str(member.id) + ">!\n
+                 You should give our rules a read at <#" + info.id + ">.\n
+                 By verifying yourself, you agree to our rules set out in <#" + info.id "> and failure to abide by the rules may result in a warning or ban.\n
+                 Feel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
+      
+     await member.send(message)
+
+
       
   
 @bot.command(name='kik', help='Kiks jim')
@@ -206,10 +213,15 @@ async def quote(ctx):
 
 @bot.command()
 async def newverify(ctx):
-    user = ctx.message.author
-    message = "Please respond with **.email** followed by your mcgill email address in order to verify your identity"
-    await user.send(message)
- 
+    member = ctx.message.author
+    guild = get(bot.guilds, name=member.guild.name)
+    info = get(guild.channels, name='information')
+    message = "Welcome <@" + str(member.id) + ">!\n
+               You should give our rules a read at <#" + info.id + ">.\n
+               By verifying yourself, you agree to our rules set out in <#" + info.id "> and failure to abide by the rules may result in a warning or ban.\n
+               Feel free to peruse the rest of the announcements and information or message an Administrator/Moderator if you need any help!"
+    await member.send(message)
+    
 @bot.command(name='email', help='sends email verification code')
 async def email(ctx, arg):
     user = ctx.message.author
