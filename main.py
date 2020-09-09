@@ -252,7 +252,7 @@ async def code(ctx, arg):
           for x,letter in enumerate(part):
             if x == 0:
               letter = letter.upper()
-            new.append(letter) 
+            new += letter
           part = new
         nickname = name[0] + ' ' + name[1]
         
