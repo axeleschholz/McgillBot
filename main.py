@@ -107,7 +107,6 @@ async def on_member_join(member):
       
   
 @bot.command(name='kik', help='Kiks jim')
-@commands.has_role('Admin')
 async def check(ctx, *targets: discord.Member):
     print(targets)
     if any(targets):
