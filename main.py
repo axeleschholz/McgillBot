@@ -1,5 +1,4 @@
 # bot.py
-#https://uptimerobot.com/dashboard#mainDashboard
 import os
 
 import discord
@@ -12,9 +11,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
-
+#TOKEN = os.getenv('DISCORD_TOKEN')
+#GUILD = os.getenv('DISCORD_GUILD')
+GUILD = 'McGill Entering Class of 2020'
+TOKEN = 'NzE4MjY3MDIxNTMxNTQ1NjMw.XtmYSg.EnHPtlDshRRJ3XgsC25fLh_4Ykg'
 bot = commands.Bot(command_prefix='.')
 
 codes = {}
@@ -172,6 +172,7 @@ async def consent(ctx, arg):
           await target.remove_roles(role)
         except:
           pass
+
         await target.add_roles(role)
         await ctx.send("<@" + str(target.id) + "> " + random.choice(consents))
         if not ctx.guild.name == GUILD:
@@ -206,57 +207,69 @@ async def quote(ctx):
 @bot.command()
 async def newverify(ctx):
     user = ctx.message.author
-    message = "Please respond with your mcgill email address in order to verify your identity"
+    message = "Please respond with **.email** followed by your mcgill email address in order to verify your identity"
     await user.send(message)
  
 @bot.command(name='email', help='sends email verification code')
 async def email(ctx, arg):
-  user = ctx.message.author
-  
-  def generate_code():
-    global codes
-    code = ''
-    for i in range(4):
-      num = random.randint(0,9)
-      code += str(num)
-    codes[code] = user
-    return code
-  
-  def send_msg(sender, to, subject, body):
-    msg = MIMEMultipart()
-    msg['From'] = sender
-    msg['To'] = to
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-    s.send_message(msg)
-    
-  if __name__ == "__main__":
-    s = smtplib.SMTP(host='smtp.gmail.com', port=587)
-    s.starttls()
-    s.login('martythemcgillbot@gmail.com', 'emailtime')
-    
-    body = 'Your verification code is ' + generate_code() + '\nThis code is valid for 30 minutes. \n\nDO NOT REPLY TO THIS EMAIL'
-    send_msg('martythemcgillbot@gmail.com', arg, 'Verification', body)
+    user = ctx.message.author
+    if '@mail.mcgill.ca' in arg or arg == "axel.eschholz@gmail.com":
+        def generate_code():
+            global codes
+            code = ''
+            for i in range(4):
+                num = random.randint(0,9)
+                code += str(num)
+            codes[code] = user
+            return code
+        
+        def send_msg(sender, to, subject, body):
+            msg = MIMEMultipart()
+            msg['From'] = sender
+            msg['To'] = to
+            msg['Subject'] = subject
+            msg.attach(MIMEText(body, 'plain'))
+            s.send_message(msg)
+            
+        if __name__ == "__main__":
+            s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+            s.starttls()
+            s.login('martythemcgillbot@gmail.com', 'emailtime')
+            
+            body = 'Your verification code is ' + generate_code() + '\nThis code is valid for 10 minutes. \n\nDO NOT REPLY TO THIS EMAIL'
+            send_msg('martythemcgillbot@gmail.com', arg, 'Verification', body)
 
-    s.quit()
-  
-  response = "An email has been sent to that address with a verification code. Please respond to this message with **.code (code)** to be verified, thanks!"
-  await ctx.send(response)
- 
+            s.quit()
+        
+        response = "An email has been sent to that address with a verification code. Please respond to this message with **.code (code)** to be verified, thanks!"
+        
+    else:
+        response = "That is not a valid mcgill email address."
+
+    await ctx.send(response)
+
 @bot.command()
 async def code(ctx, arg):
     code = arg
     user = ctx.message.author
     if code in list(codes.keys()):
       if user == codes[code]:
-        message = "whooooo"
-        codes.remove(code)
+        guild = get(bot.guilds, name=GUILD)
+        target = get(guild.members, id=user.id)
+        role = get(guild.roles, name="Certified Admitted")
+        await target.add_roles(role)
+        message = "You're all set, thanks for verifying and please proceed to the main server. Enjoy!"
+        codes.pop(code)
+        place = get(guild.channels, name='general')
+        welcome = "Welcome! @<" + str(target.id) + ">"
+        await user.send(message)
       else:
-        message = "That's someone else"
+        message = "That's someone else's code, don't try to fool me!"
+        await user.send(message)
     else:
-      message = "Invalid code, please try again or contact a moderator for help.\nIf you did not request the email in the last 30 minutes, please do so again."
-      
-    await user.send(message)
+        message = "Invalid code, please try again or contact a moderator for help.\nIf you did not request the email in the last 10 minutes, please do so again."
+    
+        await user.send(message)
     
 @bot.command(name='verify', help='verifies that person is in server')
 async def verify(ctx):
