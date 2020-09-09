@@ -161,8 +161,8 @@ async def quote(ctx):
     await ctx.send(response)
 
 @bot.command()
-@commands.has_role('Tech Support')
-async def DM(ctx, user: discord.User, *, message=None):
+@commands.has_role('Tech Support', 'Admin')
+async def dm(ctx, user: discord.User, *, message=None):
   await user.send(message)
 
 @bot.command()
