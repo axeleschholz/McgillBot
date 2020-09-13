@@ -281,43 +281,6 @@ async def code(ctx, arg):
       
 @bot.command(name='verify', help='verifies that person is in server')
 async def verify(ctx):
-  if ctx.guild.name == "McGill CS (first-year)":
-    if ctx.channel.name == "verification":
-      guild = get(bot.guilds, name=GUILD)
-      members = [member for member in guild.members]
-      target = ctx.message.author
-      
-      await ctx.message.delete()
-      checkrole = get(guild.roles, name="Certified Admitted")
-      role = get(ctx.guild.roles, name="Verified")
-      if role in target.roles:
-        response = "You're already verified, thanks for checking!"
-      elif target in members:
-          checked = False
-          member = members[members.index(target)]
-          print(member.roles)
-          for otherrole in member.roles:
-              if otherrole == checkrole:
-                  checked = True
-          if checked:
-              response = "You're verified, have a lovely day"
-              await target.remove_roles(get(ctx.guild.roles, name="verifying"))
-              await target.add_roles(role)
-              welcome = "Welcome <@" + str(target.id) + ">!"
-              general = get(ctx.guild.channels, name="general")
-              await general.send(welcome)
-          else:
-              response = "You're on the McGill server but not verified, go go go!"
-      else:
-          response = 'You are not verified, to become verified, logon to the mcgill 2020 server'
-          
-      await ctx.send("<@" + str(ctx.author.id) + "> " + response, delete_after=10)
-     
-    else:
-      response = "This command is restricted to the verification channel"
-      await ctx.send(response)
-
-  else:
     if ctx.channel.name == 'verification':
       for guild in bot.guilds:
           if guild.name == GUILD:
@@ -347,8 +310,8 @@ async def verify(ctx):
           else:
               response = "You're on the McGill server but not verified, go go go!"
       else:
-          response = 'You are not verified, to become verified, logon to the mcgill 2020 server'
-      await ctx.send("<@" + str(ctx.author.id) + "> " + response, delete_after=10)
+          response = 'You are not verified, to become verified, logon to the mcgill 2020 server.'
+      await ctx.send("<@" + str(ctx.author.id) + "> " + response)
     else:
       response = "This command is restricted to the verification channel"
       await ctx.send(response)
