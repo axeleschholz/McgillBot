@@ -218,7 +218,7 @@ async def email(ctx, arg):
 
             s.quit()
         
-        response = "An email has been sent to that address with a verification code. Please respond to this message as follows in order to be verified: ```.code (insert code here)```At the risk of pointing out the obvious, please don't include the parentheses, thanks!\n**Note that by getting verified, your nickname on the discord server McGill Entering Class of 2020 will be changed to name provided in the McGill e-mail**"
+        response = "An email has been sent to that address with a verification code. Please respond to this message as follows in order to be verified: ```.code (insert code here)```At the risk of pointing out the obvious, please don't include the parentheses, thanks!\n**Note that by getting verified, your nickname on the discord server McGill Entering Class of 2020 will be changed to name provided in your McGill e-mail.**"
         entries.append("<@" + str(user.id) + "> has been sent a verification code of " + code + ".")
         
     else:
