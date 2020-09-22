@@ -1,4 +1,11 @@
 # bot.py
+"""
+Author: Axel Eschholz
+Description: A verification protocol for the Mcgill 2024 class server.
+Contact: axel.eschholz@gmail.com
+Last edited: 9/22/2020
+"""
+
 import os
 
 import discord
@@ -11,10 +18,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-#TOKEN = os.getenv('DISCORD_TOKEN')
-#GUILD = os.getenv('DISCORD_GUILD')
-GUILD = 'McGill Entering Class of 2020'
-TOKEN = 'NzE4MjY3MDIxNTMxNTQ1NjMw.XtmYSg.EnHPtlDshRRJ3XgsC25fLh_4Ykg'
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
 bot = commands.Bot(command_prefix='.')
 
 codes = {}
@@ -187,7 +192,7 @@ async def email(ctx, arg):
     log = get(guild.channels, name='verification-log')
     entries = []
     entries.append("<@" + str(user.id) + "> has submitted their email")
-    if '@mail.mcgill.ca' in arg or arg == "axel.eschholz@gmail.com":
+    if '@mail.mcgill.ca' in arg:
         def generate_code():
             global codes
             code = ''
