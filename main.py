@@ -8,6 +8,10 @@ Last edited: 9/22/2020
 
 import os
 
+#load .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 import discord
 from discord.ext import commands
 from discord.utils import get
@@ -320,5 +324,10 @@ async def verify(ctx):
     else:
       response = "This command is restricted to the verification channel"
       await ctx.send(response)
+
+#Logging
+@bot.event
+async def on_message(message):
+    print('\033[1m\033[95m[Log {0.created_at}]:\033[0m {0.author}: {0.content}'.format(message))
 
 bot.run(TOKEN)
