@@ -22,9 +22,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
+TOKEN = os.getenv('DISCORD_TOKEN_ALT')
+GUILD = os.getenv('DISCORD_GUILD_ALT')
 bot = commands.Bot(command_prefix='.')
+print('\033[1m\033[95mBot Started:\n\tToken: {0}\n\tMain Server: {1}\033[0m'.format(TOKEN, GUILD))
 
 codes = {}
 checks = [
@@ -329,5 +330,6 @@ async def verify(ctx):
 @bot.event
 async def on_message(message):
     print('\033[1m\033[95m[Log {0.created_at}]:\033[0m {0.author}: {0.content}'.format(message))
+    await bot.process_commands(message)
 
 bot.run(TOKEN)
