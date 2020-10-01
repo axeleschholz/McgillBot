@@ -22,8 +22,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-TOKEN = os.getenv('DISCORD_TOKEN_ALT')
-GUILD = os.getenv('DISCORD_GUILD_ALT')
+TOKEN = os.getenv('')
+GUILD = os.getenv('')
 bot = commands.Bot(command_prefix='.')
 print('\033[1m\033[95mBot Started:\n\tToken: {0}\n\tMain Server: {1}\033[0m'.format(TOKEN, GUILD))
 
